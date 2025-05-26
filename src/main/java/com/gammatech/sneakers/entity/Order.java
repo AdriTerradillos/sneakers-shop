@@ -1,16 +1,20 @@
 package com.gammatech.sneakers.entity;
 
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 
 import java.util.List;
 
+@Entity
+@Table(name = "order_header")
 public class Order {
 
+    @Id
+    @GeneratedValue(strategy= GenerationType.AUTO)
     private String id;
     private String customerId;
    private double totalAmount;
 
-   @OneToMany(mappedBy="order")
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
    private List<OrderLine> orderLines;
 
     public Order() {

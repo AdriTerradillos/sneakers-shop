@@ -1,16 +1,18 @@
 package com.gammatech.sneakers.entity;
 
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 
+@Entity
 public class OrderLine {
 
-    private String sneakerId;
+    @EmbeddedId
+    private OrderLineId id;
 
     private double price;
 
     private int quantity;
 
+    @MapsId("orderId")
     @ManyToOne
     @JoinColumn(name="order_id", nullable=false)
     private Order order;
@@ -18,18 +20,18 @@ public class OrderLine {
     public OrderLine() {
     }
 
-    public OrderLine(String sneakerId, double price, int quantity) {
-        this.sneakerId = sneakerId;
+    public OrderLine(Order order, String sneakerId, double price, int quantity) {
+        this.id = new OrderLineId(order.getId(), sneakerId);
         this.price = price;
         this.quantity = quantity;
     }
 
-    public String getSneakerId() {
-        return sneakerId;
+    public OrderLineId getId() {
+        return id;
     }
 
-    public void setSneakerId(String sneakerId) {
-        this.sneakerId = sneakerId;
+    public void setId(OrderLineId id) {
+        this.id = id;
     }
 
     public double getPrice() {
