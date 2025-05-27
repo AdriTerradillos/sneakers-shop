@@ -2,6 +2,7 @@ package com.gammatech.sneakers.controllers;
 
 import com.gammatech.sneakers.entity.Sneaker;
 import com.gammatech.sneakers.service.SneakersService;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -9,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.EmptyStackException;
 import java.util.List;
 
-@RestController
+@RestController("/sneakers")
 public class SneakersController {
 
     // NO inyeccion de dependencias
@@ -25,13 +26,21 @@ public class SneakersController {
         this.sneakersService = sneakersService;
     }
 
-    @GetMapping("/sneakers")
-    public ResponseEntity<List<Sneaker>> getSneakers() {
-        List<Sneaker> sneakers = sneakersService.getAll();
-        return ResponseEntity.status(HttpStatus.OK).body(sneakers);
+    @GetMapping()
+    public ResponseEntity<SneakerPageResponse> getSneakers(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "2") int size) {
+        Page<Sneaker> sneakersPage = sneakersService.getAll(page, size);
+        SneakerPageResponse sneakerPageResponse = new SneakerPageResponse(
+                sneakersPage.getContent(),
+                (int) sneakersPage.getTotalElements(),
+                sneakersPage.getTotalPages(),
+                sneakersPage.getNumber()
+        );
+        return ResponseEntity.status(HttpStatus.OK).body(sneakerPageResponse);
     }
 
-    @PostMapping("/sneakers")
+    @PostMapping()
     public ResponseEntity<Sneaker> addSneaker(@RequestBody Sneaker sneaker) {
         try {
             Sneaker savedSneaker = sneakersService.save(sneaker);
@@ -41,7 +50,7 @@ public class SneakersController {
         }
     }
 
-    @DeleteMapping("/sneakers/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Sneaker> deleteSneaker(@PathVariable Long id) {
         try {
             Sneaker deletedSneaker = sneakersService.delete(id);

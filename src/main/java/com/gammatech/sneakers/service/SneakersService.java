@@ -2,6 +2,9 @@ package com.gammatech.sneakers.service;
 
 import com.gammatech.sneakers.entity.Sneaker;
 import com.gammatech.sneakers.repository.SneakersRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.swing.text.html.Option;
@@ -44,5 +47,10 @@ public class SneakersService {
 
     public List<Sneaker> getAll() {
         return (List<Sneaker>) sneakersRepository.findAll();
+    }
+
+    public Page<Sneaker> getAll(int page, int pageSize) {
+        Pageable pageable = PageRequest.of(page, pageSize);
+        return  sneakersRepository.findAll(pageable);
     }
 }
