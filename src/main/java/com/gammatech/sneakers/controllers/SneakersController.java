@@ -10,7 +10,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.EmptyStackException;
 import java.util.List;
 
-@RestController("/sneakers")
+@RestController()
+@RequestMapping("/sneakers")
 public class SneakersController {
 
     // NO inyeccion de dependencias
