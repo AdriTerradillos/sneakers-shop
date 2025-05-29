@@ -101,11 +101,11 @@ public class JDBCSneakersRepository implements SneakersRespository {
         );
 
         // Ejecutamos la consulta y obtenemos los resultados
-        Iterable<Sneaker> sneakers = jdbcTemplate.query(sql, rowMapper, limit, offset);
+        List<Sneaker> sneakers = jdbcTemplate.query(sql, rowMapper, limit, offset);
 
         // Aquí deberías implementar la lógica para convertir Iterable<Sneaker> a Page<Sneaker>
         // Esto es solo un ejemplo y necesitarás ajustar según tu implementación de Page
-        return new PageImpl<Sneaker>(List.copyOf((java.util.Collection<? extends Sneaker>) sneakers), pageable, count());
+        return new PageImpl<Sneaker>(sneakers, pageable, count());
     }
 
     private long count() {
