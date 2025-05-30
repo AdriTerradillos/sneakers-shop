@@ -2,6 +2,8 @@ package com.gammatech.sneakers.entity;
 
 import jakarta.persistence.*;
 
+import java.util.Objects;
+
 @Entity
 @Table(name = "sneaker")
 public class Sneaker {
@@ -80,6 +82,5 @@ public class Sneaker {
     public void setPrice(double price) {
         this.price = price;
     }
-
 
 }

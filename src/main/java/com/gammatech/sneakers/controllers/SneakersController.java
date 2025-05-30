@@ -64,4 +64,19 @@ public class SneakersController {
         }
     }
 
+    @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<Sneaker> updateSneaker(@PathVariable Long id, @RequestBody Sneaker sneaker) {
+        try {
+            //Sneaker updatedSneaker = sneakersService.update(id, sneaker);
+            sneaker.setName("Air Max Updated");
+            sneaker.setColor("Blue");
+            return ResponseEntity.status(HttpStatus.OK).body(sneaker);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        } catch (EmptyStackException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+    }
+
 }
